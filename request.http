@@ -1,0 +1,23 @@
+GET http://localhost:3001/usuarios HTTP/1.1
+
+###
+GET http://localhost:3001/usuarios/1
+
+### 
+POST http://localhost:3001/usuarios
+Content-Type: application/json
+
+{
+    "nombre":"Lukas"
+}
+
+###
+PUT http://localhost:3001/usuarios/1
+Content-Type: application/json
+
+{
+    "nombre":"Luciana"
+}
+
+###
+DELETE http://localhost:3001/usuarios/2
