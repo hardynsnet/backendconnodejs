@@ -5,54 +5,53 @@ import express from "express"
 const app = express()
 
 //Middleware (codigo ejecutado antes de las peticiones)
+// En este caso el encargado de facilitar el intercambio de inforación de objetos JSON en peticiones POST 
 app.use(express.json())
 
 //Lista de usuarios
 const usuarios = [
-        {
-            "id":1,
-            "nombre":"Ana"
-        },
-        {
-            "id":2,
-            "nombre":"Pepe"
-        }
-    ];
+    {
+        "id": 1,
+        "nombre": "Ana"
+    },
+    {
+        "id": 2,
+        "nombre": "Pepe"
+    }
+];
 
 // Puerto
-const PORT = 3001;
+const PORT = 3001; // lo más practico es que esto vaya en un .env
 
-// Especificamos rutas con verbos (GET, POST, PUT, DELETE)
+// Especificamos rutas con verbos (GET, POST, PUT, DELETE) 
+// Ruta de prueba
 app.get("/", (request, response) => {
     response.send('Hola desde mi backend');
 })
 
-//Ruta 2
+//Obtener el listado (array de usuarios)
 app.get("/usuarios", (request, response) => {
     response.json(usuarios)
 })
 
-//Ruta 3 
+//Obtener un usuario por su ID
 app.get("/usuarios/:id", (request, response) => {
     const userId = parseInt(request.params.id)
     const usuario = usuarios.find(user => user.id === userId)
-    // console.log(typeof userId)
-    // console.log(userId);
     console.log(usuario)
-    //find 
     response.json(usuario)
 })
 
-//Ruta 4 
+//Creamos un nuevo usuario
 app.post("/usuarios", (request, response) => {
     const newUser = {
         id: usuarios.length + 1,
         ...request.body,
     }
-   usuarios.push(newUser);
+    usuarios.push(newUser);
 })
 
-// Ruta 5 
+// Editamos un usuario existente 
 app.put("/usuarios/:id", (request, response) => {
     const userId = parseInt(request.params.id)
     const userIndex = usuarios.findIndex(user => user.id === userId)
@@ -62,18 +61,19 @@ app.put("/usuarios/:id", (request, response) => {
     }
 
     if (userIndex === -1) {
-        response.status(404).json({ error: "User not found"})
+        response.status(404).json({ error: "User not found" })
     }
 
     response.json(usuarios[userIndex])
 })
 
+// Eliminamos un usuario por su ID
 app.delete("/usuarios/:id", (request, response) => {
     const userId = parseInt(request.params.id)
     const userIndex = usuarios.findIndex(user => user.id === userId)
 
     if (userIndex) {
-    response.status(404).json({ error: "User not found"})
+        response.status(404).json({ error: "User not found" })
     }
 
     usuarios.splice(userIndex, 1)
